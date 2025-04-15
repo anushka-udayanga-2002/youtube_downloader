@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Downloader</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Video Downloader</h1>
+        <form action="/get_streams" method="post">
+            <input type="text" name="url" placeholder="Enter YouTube URL" required>
+            <button type="submit">Fetch Formats</button>
+        </form>
+
+        {% if streams %}
+            <h2>{{ title }}</h2>
+            <form action="/download" method="post">
+                <input type="hidden" name="url" value="{{ url }}">
+                <select name="itag" required>
+                    {% for stream in streams %}
+                        <option value="{{ stream.itag }}">
+                            Video: {{ stream.resolution }} - {{ stream.mime_type }}
+                        </option>
+                    {% endfor %}
+                    <option value="{{ audio_stream.itag }}">
+                        Audio Only - {{ audio_stream.mime_type }}
+                    </option>
+                </select>
+                <button type="submit">Download</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
