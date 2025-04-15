@@ -6,10 +6,19 @@ import uuid
 
 app = Flask(__name__)
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True, host="0.0.0.0", port=port)
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        url = request.form['url']
+        yt = YouTube(url)
+        stream = yt.streams.get_highest_resolution()
+        stream.download()
+        return f"Downloaded: {yt.title}"
+    return render_template('index.html')
 
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
 
 @app.route('/')
 def index():
