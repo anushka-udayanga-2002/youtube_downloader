@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, send_file
 from pytube import YouTube
 import os
@@ -14,14 +13,6 @@ def index():
         stream = yt.streams.get_highest_resolution()
         stream.download()
         return f"Downloaded: {yt.title}"
-    return render_template('index.html')
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
-
-@app.route('/')
-def index():
     return render_template('index.html')
 
 @app.route('/get_streams', methods=['POST'])
@@ -46,4 +37,5 @@ def download():
     return send_file(filepath, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
